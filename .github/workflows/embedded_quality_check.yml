@@ -1,0 +1,21 @@
+name: Quality check
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+jobs:
+  driver-quality:
+    uses: sensirion/.github/.github/workflows/driver.c.check.yml@main
+
+  todo-check:
+    if: github.event_name == 'push' && github.ref != 'refs/head/main'
+    uses: sensirion/.github/.github/workflows/driver.common.todo_check.yml@main
+
+  code-generation-check:
+    if: github.event_name == 'push' && github.ref != 'refs/head/main'
+    uses: sensirion/.github/.github/workflows/driver.generated.metadata_check.yml@main
