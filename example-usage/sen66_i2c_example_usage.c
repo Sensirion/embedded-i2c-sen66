@@ -3,7 +3,7 @@
  *
  * Generator:     sensirion-driver-generator 1.0.1
  * Product:       sen66
- * Model-Version: 1.2.0
+ * Model-Version: 1.3.0
  */
 /*
  * Copyright (c) 2024, Sensirion AG
@@ -86,7 +86,7 @@ int main(void) {
     int16_t nox_index = 0;
     uint16_t co2 = 0;
     uint16_t repetition = 0;
-    for (repetition = 0; repetition < 50; repetition++) {
+    for (repetition = 0; repetition < 100; repetition++) {
         sensirion_hal_sleep_us(1000000);
         error = sen66_read_measured_values_as_integers(
             &mass_concentration_pm1p0, &mass_concentration_pm2p5,
