@@ -3,10 +3,10 @@
  *
  * Generator:     sensirion-driver-generator 1.0.1
  * Product:       sen66
- * Model-Version: 1.3.1
+ * Model-Version: 1.5.0
  */
 /*
- * Copyright (c) 2024, Sensirion AG
+ * Copyright (c) 2025, Sensirion AG
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -749,7 +749,7 @@ int16_t sen66_activate_sht_heater();
  *
  * @return error_code 0 on success, an error code otherwise.
  */
-int16_t sen66_get_product_name(uint8_t* product_name,
+int16_t sen66_get_product_name(int8_t* product_name,
                                uint16_t product_name_size);
 
 /**
@@ -762,7 +762,7 @@ int16_t sen66_get_product_name(uint8_t* product_name,
  *
  * @return error_code 0 on success, an error code otherwise.
  */
-int16_t sen66_get_serial_number(uint8_t* serial_number,
+int16_t sen66_get_serial_number(int8_t* serial_number,
                                 uint16_t serial_number_size);
 
 /**

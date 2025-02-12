@@ -3,7 +3,7 @@
  *
  * Generator:     sensirion-driver-generator 1.0.1
  * Product:       sen66
- * Model-Version: 1.3.1
+ * Model-Version: 1.5.0
  */
 
 #include "sen66_i2c.h"
@@ -40,22 +40,18 @@ TEST (SEN66_Tests, test_perform_forced_co2_recalibration1) {
 
 TEST (SEN66_Tests, test_get_product_name1) {
     int16_t local_error = 0;
-    uint8_t product_name[32] = {0};
+    int8_t product_name[32] = {0};
     local_error = sen66_get_product_name(product_name, 32);
     CHECK_EQUAL_ZERO_TEXT(local_error, "get_product_name");
-    printf("product_name: ");
-    print_byte_array(product_name, 32);
-    printf("\n");
+    printf("product_name: %s\n", product_name);
 }
 
 TEST (SEN66_Tests, test_get_serial_number1) {
     int16_t local_error = 0;
-    uint8_t serial_number[32] = {0};
+    int8_t serial_number[32] = {0};
     local_error = sen66_get_serial_number(serial_number, 32);
     CHECK_EQUAL_ZERO_TEXT(local_error, "get_serial_number");
-    printf("serial_number: ");
-    print_byte_array(serial_number, 32);
-    printf("\n");
+    printf("serial_number: %s\n", serial_number);
 }
 
 TEST (SEN66_Tests, test_device_reset1) {
