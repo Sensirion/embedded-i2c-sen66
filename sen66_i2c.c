@@ -3,7 +3,7 @@
  *
  * Generator:     sensirion-driver-generator 1.1.2
  * Product:       sen66
- * Model-Version: 1.5.0
+ * Model-Version: 1.6.0
  */
 /*
  * Copyright (c) 2025, Sensirion AG
@@ -576,7 +576,29 @@ int16_t sen66_activate_sht_heater() {
     if (local_error != NO_ERROR) {
         return local_error;
     }
-    sensirion_i2c_hal_sleep_usec(1300 * 1000);
+    sensirion_i2c_hal_sleep_usec(20 * 1000);
+    return local_error;
+}
+
+int16_t sen66_get_sht_heater_measurements(int16_t* humidity,
+                                          int16_t* temperature) {
+    int16_t local_error = NO_ERROR;
+    uint8_t* buffer_ptr = communication_buffer;
+    uint16_t local_offset = 0;
+    local_offset =
+        sensirion_i2c_add_command16_to_buffer(buffer_ptr, local_offset, 0x6790);
+    local_error =
+        sensirion_i2c_write_data(_i2c_address, buffer_ptr, local_offset);
+    if (local_error != NO_ERROR) {
+        return local_error;
+    }
+    sensirion_i2c_hal_sleep_usec(20 * 1000);
+    local_error = sensirion_i2c_read_data_inplace(_i2c_address, buffer_ptr, 4);
+    if (local_error != NO_ERROR) {
+        return local_error;
+    }
+    *humidity = sensirion_common_bytes_to_int16_t(&buffer_ptr[0]);
+    *temperature = sensirion_common_bytes_to_int16_t(&buffer_ptr[2]);
     return local_error;
 }
 
@@ -621,6 +643,27 @@ int16_t sen66_get_serial_number(int8_t* serial_number,
     }
     sensirion_common_copy_bytes(&buffer_ptr[0], (uint8_t*)serial_number,
                                 serial_number_size);
+    return local_error;
+}
+
+int16_t sen66_get_version(uint8_t* firmware_major, uint8_t* firmware_minor) {
+    int16_t local_error = NO_ERROR;
+    uint8_t* buffer_ptr = communication_buffer;
+    uint16_t local_offset = 0;
+    local_offset =
+        sensirion_i2c_add_command16_to_buffer(buffer_ptr, local_offset, 0xd100);
+    local_error =
+        sensirion_i2c_write_data(_i2c_address, buffer_ptr, local_offset);
+    if (local_error != NO_ERROR) {
+        return local_error;
+    }
+    sensirion_i2c_hal_sleep_usec(20 * 1000);
+    local_error = sensirion_i2c_read_data_inplace(_i2c_address, buffer_ptr, 2);
+    if (local_error != NO_ERROR) {
+        return local_error;
+    }
+    *firmware_major = (uint8_t)buffer_ptr[0];
+    *firmware_minor = (uint8_t)buffer_ptr[1];
     return local_error;
 }
 
