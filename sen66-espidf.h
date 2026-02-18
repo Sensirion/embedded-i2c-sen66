@@ -1,0 +1,8 @@
+//
+// Created by karel on 18.02.2026.
+//
+
+#ifndef SEN66_ESPIDF_SEN66_ESPIDF_H
+#define SEN66_ESPIDF_SEN66_ESPIDF_H
+
+#endif  // SEN66_ESPIDF_SEN66_ESPIDF_H
