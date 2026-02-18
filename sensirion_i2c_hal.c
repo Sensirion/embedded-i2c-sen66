@@ -32,6 +32,22 @@
 #include "sensirion_i2c_hal.h"
 #include "sensirion_common.h"
 #include "sensirion_config.h"
+#include "driver/i2c_master.h"
+#include "freertos/FreeRTOS.h"
+#include "freertos/task.h"
+
+#define SEN66_I2C_ADDRESS 0x6B
+#define txMAX_DELAY 100
+static const i2c_device_config_t sen66_dev_config = {
+    .dev_addr_length = I2C_ADDR_BIT_LEN_7,
+    .device_address = SEN66_I2C_ADDRESS,
+    .scl_speed_hz = 400000, // 400 kHz
+    .scl_wait_us = 0,
+    .flags = {
+        .disable_ack_check = 0
+    },
+
+};
 
 /*
  * INSTRUCTIONS
@@ -62,15 +78,15 @@ int16_t sensirion_i2c_hal_select_bus(uint8_t bus_idx) {
  * Initialize all hard- and software components that are needed for the I2C
  * communication.
  */
-void sensirion_i2c_hal_init(void) {
-    /* TODO:IMPLEMENT */
+esp_err_t sensirion_i2c_hal_init(i2c_master_bus_handle_t bus_handle, i2c_master_dev_handle_t *dev_handle) {
+    return i2c_master_bus_add_device(bus_handle, &sen66_dev_config, dev_handle);
 }
 
 /**
  * Release all resources initialized by sensirion_i2c_hal_init().
  */
-void sensirion_i2c_hal_free(void) {
-    /* TODO:IMPLEMENT or leave empty if no resources need to be freed */
+esp_err_t sensirion_i2c_hal_free(i2c_master_dev_handle_t dev_handle) {
+    return i2c_master_bus_rm_device(dev_handle);
 }
 
 /**
@@ -78,14 +94,13 @@ void sensirion_i2c_hal_free(void) {
  * If the device does not acknowledge the read command, an error shall be
  * returned.
  *
- * @param address 7-bit I2C address to read from
+ * @param dev_handle i2c_master_dev_handle_t device handle
  * @param data    pointer to the buffer where the data is to be stored
  * @param count   number of bytes to read from I2C and store in the buffer
  * @returns 0 on success, error code otherwise
  */
-int8_t sensirion_i2c_hal_read(uint8_t address, uint8_t* data, uint8_t count) {
-    /* TODO:IMPLEMENT */
-    return NOT_IMPLEMENTED_ERROR;
+esp_err_t sensirion_i2c_hal_read(i2c_master_dev_handle_t dev_handle, uint8_t* data, uint8_t count) {
+    return i2c_master_transmit(dev_handle, data, count,txMAX_DELAY);
 }
 
 /**
@@ -94,15 +109,13 @@ int8_t sensirion_i2c_hal_read(uint8_t address, uint8_t* data, uint8_t count) {
  * the slave device does not acknowledge any of the bytes, an error shall be
  * returned.
  *
- * @param address 7-bit I2C address to write to
+ * @param dev_handle i2c_master_dev_handle_t device handle
  * @param data    pointer to the buffer containing the data to write
  * @param count   number of bytes to read from the buffer and send over I2C
  * @returns 0 on success, error code otherwise
  */
-int8_t sensirion_i2c_hal_write(uint8_t address, const uint8_t* data,
-                               uint8_t count) {
-    /* TODO:IMPLEMENT */
-    return NOT_IMPLEMENTED_ERROR;
+int8_t sensirion_i2c_hal_write(i2c_master_dev_handle_t dev_handle, const uint8_t* data, uint8_t count) {
+    return i2c_master_transmit(dev_handle, data, count,txMAX_DELAY);
 }
 
 /**
@@ -114,5 +127,5 @@ int8_t sensirion_i2c_hal_write(uint8_t address, const uint8_t* data,
  * @param useconds the sleep time in microseconds
  */
 void sensirion_i2c_hal_sleep_usec(uint32_t useconds) {
-    /* TODO:IMPLEMENT */
+    vTaskDelay(pdMS_TO_TICKS((useconds + 999) / 1000)); // Convert microseconds to milliseconds and delay
 }
