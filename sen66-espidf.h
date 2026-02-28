@@ -10,6 +10,8 @@ extern "C" {
 #endif
 
 #include "sensirion_config.h"
+#include "esp_err.h"
+#include "driver/i2c_types.h"
 #define SEN66_I2C_ADDR_6B 0x6b
 
 typedef enum {
@@ -66,10 +68,10 @@ typedef union {
 /**
  * @brief Initialize i2c address of driver
  *
- * @param[in] i2c_address Used i2c address
+ * @param[in] i2c_bus_handle I2C master bus handle
  *
  */
-void sen66_init(uint8_t i2c_address);
+esp_err_t sen66_init(i2c_master_bus_handle_t i2c_bus_handle);
 
 /**
  * @brief sen66_signal_co2
@@ -91,7 +93,7 @@ uint16_t sen66_signal_co2(uint16_t co2_raw);
  *
  * @return error_code 0 on success, an error code otherwise.
  */
-int16_t sen66_start_continuous_measurement();
+esp_err_t sen66_start_continuous_measurement();
 
 /**
  * @brief Stop the continuous measurement
@@ -102,7 +104,7 @@ int16_t sen66_start_continuous_measurement();
  *
  * @return error_code 0 on success, an error code otherwise.
  */
-int16_t sen66_stop_measurement();
+esp_err_t sen66_stop_measurement();
 
 /**
  * @brief Check if data is ready to be read out from the sensor
@@ -117,7 +119,7 @@ int16_t sen66_stop_measurement();
  *
  * @return error_code 0 on success, an error code otherwise.
  */
-int16_t sen66_get_data_ready(uint8_t* padding, bool* data_ready);
+esp_err_t sen66_get_data_ready(uint8_t* padding, bool* data_ready);
 
 /**
  * @brief read measured values as integers.
@@ -151,7 +153,7 @@ int16_t sen66_get_data_ready(uint8_t* padding, bool* data_ready);
  *
  * @return error_code 0 on success, an error code otherwise.
  */
-int16_t sen66_read_measured_values_as_integers(
+esp_err_t sen66_read_measured_values_as_integers(
     uint16_t* mass_concentration_pm1p0, uint16_t* mass_concentration_pm2p5,
     uint16_t* mass_concentration_pm4p0, uint16_t* mass_concentration_pm10p0,
     int16_t* ambient_humidity, int16_t* ambient_temperature, int16_t* voc_index,
@@ -185,7 +187,7 @@ int16_t sen66_read_measured_values_as_integers(
  *
  * @return error_code 0 on success, an error code otherwise.
  */
-int16_t sen66_read_number_concentration_values_as_integers(
+esp_err_t sen66_read_number_concentration_values_as_integers(
     uint16_t* number_concentration_pm0p5, uint16_t* number_concentration_pm1p0,
     uint16_t* number_concentration_pm2p5, uint16_t* number_concentration_pm4p0,
     uint16_t* number_concentration_pm10p0);
@@ -215,7 +217,7 @@ int16_t sen66_read_number_concentration_values_as_integers(
  *
  * @return error_code 0 on success, an error code otherwise.
  */
-int16_t sen66_read_measured_raw_values(int16_t* raw_humidity,
+esp_err_t sen66_read_measured_raw_values(int16_t* raw_humidity,
                                        int16_t* raw_temperature,
                                        uint16_t* raw_voc, uint16_t* raw_nox,
                                        uint16_t* raw_co2);
@@ -231,7 +233,7 @@ int16_t sen66_read_measured_raw_values(int16_t* raw_humidity,
  *
  * @return error_code 0 on success, an error code otherwise.
  */
-int16_t sen66_start_fan_cleaning();
+esp_err_t sen66_start_fan_cleaning();
 
 /**
  * @brief sen66_set_temperature_offset_parameters
@@ -281,9 +283,7 @@ int16_t sen66_start_fan_cleaning();
  * @endcode
  *
  */
-int16_t sen66_set_temperature_offset_parameters(int16_t offset, int16_t slope,
-                                                uint16_t time_constant,
-                                                uint16_t slot);
+esp_err_t sen66_set_temperature_offset_parameters(int16_t offset, int16_t slope, uint16_t time_constant, uint16_t slot);
 
 /**
  * @brief sen66_set_voc_algorithm_tuning_parameters
@@ -332,7 +332,7 @@ int16_t sen66_set_temperature_offset_parameters(int16_t offset, int16_t slope,
  * @endcode
  *
  */
-int16_t sen66_set_voc_algorithm_tuning_parameters(
+esp_err_t sen66_set_voc_algorithm_tuning_parameters(
     int16_t index_offset, int16_t learning_time_offset_hours,
     int16_t learning_time_gain_hours, int16_t gating_max_duration_minutes,
     int16_t std_initial, int16_t gain_factor);
@@ -361,7 +361,7 @@ int16_t sen66_set_voc_algorithm_tuning_parameters(
  *
  * @return error_code 0 on success, an error code otherwise.
  */
-int16_t sen66_get_voc_algorithm_tuning_parameters(
+esp_err_t sen66_get_voc_algorithm_tuning_parameters(
     int16_t* index_offset, int16_t* learning_time_offset_hours,
     int16_t* learning_time_gain_hours, int16_t* gating_max_duration_minutes,
     int16_t* std_initial, int16_t* gain_factor);
@@ -413,7 +413,7 @@ int16_t sen66_get_voc_algorithm_tuning_parameters(
  * @endcode
  *
  */
-int16_t sen66_set_nox_algorithm_tuning_parameters(
+esp_err_t sen66_set_nox_algorithm_tuning_parameters(
     int16_t index_offset, int16_t learning_time_offset_hours,
     int16_t learning_time_gain_hours, int16_t gating_max_duration_minutes,
     int16_t std_initial, int16_t gain_factor);
@@ -443,7 +443,7 @@ int16_t sen66_set_nox_algorithm_tuning_parameters(
  *
  * @return error_code 0 on success, an error code otherwise.
  */
-int16_t sen66_get_nox_algorithm_tuning_parameters(
+esp_err_t sen66_get_nox_algorithm_tuning_parameters(
     int16_t* index_offset, int16_t* learning_time_offset_hours,
     int16_t* learning_time_gain_hours, int16_t* gating_max_duration_minutes,
     int16_t* std_initial, int16_t* gain_factor);
@@ -479,8 +479,7 @@ int16_t sen66_get_nox_algorithm_tuning_parameters(
  * @endcode
  *
  */
-int16_t sen66_set_temperature_acceleration_parameters(uint16_t k, uint16_t p,
-                                                      uint16_t t1, uint16_t t2);
+esp_err_t sen66_set_temperature_acceleration_parameters(uint16_t k, uint16_t p, uint16_t t1, uint16_t t2);
 
 /**
  * @brief sen66_set_voc_algorithm_state
@@ -500,8 +499,7 @@ int16_t sen66_set_temperature_acceleration_parameters(uint16_t k, uint16_t p,
  *
  * @return error_code 0 on success, an error code otherwise.
  */
-int16_t sen66_set_voc_algorithm_state(const uint8_t* state,
-                                      uint16_t state_size);
+esp_err_t sen66_set_voc_algorithm_state(const uint8_t* state, uint16_t state_size);
 
 /**
  * @brief sen66_get_voc_algorithm_state
@@ -522,7 +520,7 @@ int16_t sen66_set_voc_algorithm_state(const uint8_t* state,
  *
  * @return error_code 0 on success, an error code otherwise.
  */
-int16_t sen66_get_voc_algorithm_state(uint8_t* state, uint16_t state_size);
+esp_err_t sen66_get_voc_algorithm_state(uint8_t* state, uint16_t state_size);
 
 /**
  * @brief Perform Forced CO₂ Recalibration
@@ -543,9 +541,7 @@ int16_t sen66_get_voc_algorithm_state(uint8_t* state, uint16_t state_size);
  *
  * @return error_code 0 on success, an error code otherwise.
  */
-int16_t
-sen66_perform_forced_co2_recalibration(uint16_t target_co2_concentration,
-                                       uint16_t* correction);
+esp_err_t sen66_perform_forced_co2_recalibration(uint16_t target_co2_concentration, uint16_t* correction);
 
 /**
  * @brief sen66_set_co2_sensor_automatic_self_calibration
@@ -578,7 +574,7 @@ sen66_perform_forced_co2_recalibration(uint16_t target_co2_concentration,
  * @endcode
  *
  */
-int16_t sen66_set_co2_sensor_automatic_self_calibration(uint16_t status);
+esp_err_t sen66_set_co2_sensor_automatic_self_calibration(uint16_t status);
 
 /**
  * @brief sen66_get_co2_sensor_automatic_self_calibration
@@ -596,8 +592,7 @@ int16_t sen66_set_co2_sensor_automatic_self_calibration(uint16_t status);
  *
  * @return error_code 0 on success, an error code otherwise.
  */
-int16_t sen66_get_co2_sensor_automatic_self_calibration(uint8_t* padding,
-                                                        bool* status);
+esp_err_t sen66_get_co2_sensor_automatic_self_calibration(uint8_t* padding, bool* status);
 
 /**
  * @brief sen66_set_ambient_pressure
@@ -632,7 +627,7 @@ int16_t sen66_get_co2_sensor_automatic_self_calibration(uint8_t* padding,
  * @endcode
  *
  */
-int16_t sen66_set_ambient_pressure(uint16_t ambient_pressure);
+esp_err_t sen66_set_ambient_pressure(uint16_t ambient_pressure);
 
 /**
  * @brief sen66_get_ambient_pressure
@@ -648,7 +643,7 @@ int16_t sen66_set_ambient_pressure(uint16_t ambient_pressure);
  *
  * @return error_code 0 on success, an error code otherwise.
  */
-int16_t sen66_get_ambient_pressure(uint16_t* ambient_pressure);
+esp_err_t sen66_get_ambient_pressure(uint16_t* ambient_pressure);
 
 /**
  * @brief sen66_set_sensor_altitude
@@ -676,7 +671,7 @@ int16_t sen66_get_ambient_pressure(uint16_t* ambient_pressure);
  * @endcode
  *
  */
-int16_t sen66_set_sensor_altitude(uint16_t altitude);
+esp_err_t sen66_set_sensor_altitude(uint16_t altitude);
 
 /**
  * @brief sen66_get_sensor_altitude
@@ -690,7 +685,7 @@ int16_t sen66_set_sensor_altitude(uint16_t altitude);
  *
  * @return error_code 0 on success, an error code otherwise.
  */
-int16_t sen66_get_sensor_altitude(uint16_t* altitude);
+esp_err_t sen66_get_sensor_altitude(uint16_t* altitude);
 
 /**
  * @brief Activate SHT Heater
@@ -709,7 +704,7 @@ int16_t sen66_get_sensor_altitude(uint16_t* altitude);
  *
  * @return error_code 0 on success, an error code otherwise.
  */
-int16_t sen66_activate_sht_heater();
+esp_err_t sen66_activate_sht_heater();
 
 /**
  * @brief Get the measurement values when the SHT sensor heating is finished.
@@ -730,8 +725,7 @@ int16_t sen66_activate_sht_heater();
  *
  * @return error_code 0 on success, an error code otherwise.
  */
-int16_t sen66_get_sht_heater_measurements(int16_t* humidity,
-                                          int16_t* temperature);
+esp_err_t sen66_get_sht_heater_measurements(int16_t* humidity, int16_t* temperature);
 
 /**
  * @brief sen66_get_product_name
@@ -743,8 +737,7 @@ int16_t sen66_get_sht_heater_measurements(int16_t* humidity,
  *
  * @return error_code 0 on success, an error code otherwise.
  */
-int16_t sen66_get_product_name(int8_t* product_name,
-                               uint16_t product_name_size);
+esp_err_t sen66_get_product_name(int8_t* product_name, uint16_t product_name_size);
 
 /**
  * @brief sen66_get_serial_number
@@ -756,8 +749,7 @@ int16_t sen66_get_product_name(int8_t* product_name,
  *
  * @return error_code 0 on success, an error code otherwise.
  */
-int16_t sen66_get_serial_number(int8_t* serial_number,
-                                uint16_t serial_number_size);
+esp_err_t sen66_get_serial_number(int8_t* serial_number, uint16_t serial_number_size);
 
 /**
  * @brief sen66_get_version
@@ -770,7 +762,7 @@ int16_t sen66_get_serial_number(int8_t* serial_number,
  *
  * @return error_code 0 on success, an error code otherwise.
  */
-int16_t sen66_get_version(uint8_t* firmware_major, uint8_t* firmware_minor);
+esp_err_t sen66_get_version(uint8_t* firmware_major, uint8_t* firmware_minor);
 
 /**
  * @brief sen66_read_device_status
@@ -794,13 +786,13 @@ int16_t sen66_get_version(uint8_t* firmware_major, uint8_t* firmware_minor);
  *
  * @return error_code 0 on success, an error code otherwise.
  */
-int16_t sen66_read_device_status(sen66_device_status* device_status);
+esp_err_t sen66_read_device_status(sen66_device_status* device_status);
 
 /**
  * @brief sen66_read_and_clear_device_status
  *
  * Reads the current device status (like command 0xD206 "Read Device Status")
- * and afterwards clears all flags.
+ * and afterward clears all flags.
  *
  * @param[out] device_status Device status (32 flags as an integer value)
  * **before** clearing it. For details, please refer to the device status flags
@@ -808,7 +800,7 @@ int16_t sen66_read_device_status(sen66_device_status* device_status);
  *
  * @return error_code 0 on success, an error code otherwise.
  */
-int16_t sen66_read_and_clear_device_status(sen66_device_status* device_status);
+esp_err_t sen66_read_and_clear_device_status(sen66_device_status* device_status);
 
 /**
  * @brief sen66_device_reset
@@ -817,7 +809,7 @@ int16_t sen66_read_and_clear_device_status(sen66_device_status* device_status);
  *
  * @return error_code 0 on success, an error code otherwise.
  */
-int16_t sen66_device_reset();
+esp_err_t sen66_device_reset();
 
 #ifdef __cplusplus
 }

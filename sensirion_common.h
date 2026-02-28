@@ -38,7 +38,7 @@
 extern "C" {
 #endif
 
-#define NO_ERROR 0
+#define ESP_OK 0
 #define NOT_IMPLEMENTED_ERROR 31
 
 #ifndef ARRAY_SIZE
@@ -161,7 +161,7 @@ void sensirion_common_int16_t_to_bytes(const int16_t value, uint8_t* bytes);
 /**
  * sensirion_common_float_to_bytes() - Convert an float to an array of bytes
  *
- * Convert an float value in system-endianness to big-endian/MBS-first
+ * Converts a float value in system-endianness to big-endian/MBS-first
  * format to send to the sensor.
  *
  * @param value Value to convert
@@ -183,7 +183,7 @@ void sensirion_common_copy_bytes(const uint8_t* source, uint8_t* destination,
  * sensirion_common_to_integer() - Copy bytes from byte array to integer.
  *
  * @param source      Array of bytes to be copied.
- * @param int_value Pointer to integer of bytes to be copied to.
+ * @param destination Pointer to integer of bytes to be copied to.
  * @param int_type Type (size) of the integer to be copied.
  * @param data_length Number of bytes to copy.
  */

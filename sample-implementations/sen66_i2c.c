@@ -36,10 +36,10 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "sen66_i2c.h"
-#include "sensirion_common.h"
-#include "sensirion_i2c.h"
-#include "sensirion_i2c_hal.h"
+#include "../sen66_i2c.h"
+#include "../sensirion_common.h"
+#include "../sensirion_i2c.h"
+#include "../sensirion_i2c_hal.h"
 
 #define sensirion_hal_sleep_us sensirion_i2c_hal_sleep_usec
 

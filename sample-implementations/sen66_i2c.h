@@ -43,7 +43,7 @@
 extern "C" {
 #endif
 
-#include "sensirion_config.h"
+#include "../sensirion_config.h"
 #define SEN66_I2C_ADDR_6B 0x6b
 
 typedef enum {

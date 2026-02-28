@@ -1,0 +1,35 @@
+{
+  "name": "sen66-espidf",
+  "version": "1.0.0",
+  "description": "Sensirion SEN66 I2C driver for ESP-IDF",
+  "keywords": [
+    "sensirion",
+    "sen66",
+    "i2c",
+    "sensor",
+    "esp32"
+  ],
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "authors": [
+    {
+      "name": "Sensirion",
+      "url": ""
+    }
+  ],
+  "license": "Other",
+  "frameworks": "espidf",
+  "platforms": "espressif32",
+  "build": {
+    "srcFilter": [
+      "+<*>",
+      "-<tests>",
+      "-<example-usage>",
+      "-<sample-implementations>",
+      "-<images>"
+    ]
+  }
+}
+

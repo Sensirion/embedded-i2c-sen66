@@ -38,15 +38,15 @@
 
 #define SEN66_I2C_ADDRESS 0x6B
 #define txMAX_DELAY 100
+
 static const i2c_device_config_t sen66_dev_config = {
     .dev_addr_length = I2C_ADDR_BIT_LEN_7,
     .device_address = SEN66_I2C_ADDRESS,
-    .scl_speed_hz = 400000, // 400 kHz
+    .scl_speed_hz = 100000, // 100 kHz
     .scl_wait_us = 0,
     .flags = {
         .disable_ack_check = 0
     },
-
 };
 
 /*
@@ -100,7 +100,7 @@ esp_err_t sensirion_i2c_hal_free(i2c_master_dev_handle_t dev_handle) {
  * @returns 0 on success, error code otherwise
  */
 esp_err_t sensirion_i2c_hal_read(i2c_master_dev_handle_t dev_handle, uint8_t* data, uint8_t count) {
-    return i2c_master_transmit(dev_handle, data, count,txMAX_DELAY);
+    return i2c_master_receive(dev_handle, data, count, txMAX_DELAY);
 }
 
 /**
@@ -114,7 +114,7 @@ esp_err_t sensirion_i2c_hal_read(i2c_master_dev_handle_t dev_handle, uint8_t* da
  * @param count   number of bytes to read from the buffer and send over I2C
  * @returns 0 on success, error code otherwise
  */
-int8_t sensirion_i2c_hal_write(i2c_master_dev_handle_t dev_handle, const uint8_t* data, uint8_t count) {
+esp_err_t sensirion_i2c_hal_write(i2c_master_dev_handle_t dev_handle, const uint8_t* data, uint8_t count) {
     return i2c_master_transmit(dev_handle, data, count,txMAX_DELAY);
 }
 
