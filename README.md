@@ -1,14 +1,15 @@
 # Sensirion I2C SEN66 embedded Library
 
-This document explains how to set up a SEN66 sensor to run on an embedded device using the I²C interface.
+This document explains how to set up a SEN66 sensor
+to run on an embedded device using the I²C interface.
 
-<img src="images/sen6x.png" width="300px">
+<img src="images/product-image-sen6x.png" width="300px">
 
 Click [here](https://sensirion.com/sen6x-air-quality-sensor-platform) to learn more about the Sensirion SEN66 sensor.
 
 
 
-The default I²C address of [SEN66](https://www.sensirion.com/products/catalog/SEN66) is **0x6B**.
+The default I²C address of [SEN66](https://www.sensirion.com/products/catalog/SEN66) is **0x6b**.
 
 
 
@@ -19,7 +20,7 @@ The default I²C address of [SEN66](https://www.sensirion.com/products/catalog/S
 Your sensor has 4 pins that need to be connected to your board: VDD, GND, SDA, SCL.
 Use the following description to connect your SEN66:
 
-<img src="images/sen6x-pinout.png" width="300px">
+<img src="images/product-pinout-sen6x.png" width="300px">
 
 | *Pin* | *Cable Color* | *Name* | *Description*  | *Comments* |
 |-------|---------------|:------:|----------------|------------|
