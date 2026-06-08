@@ -3,7 +3,7 @@
  *
  * Generator:     sensirion-driver-generator 1.7.0
  * Product:       sen66
- * Model-Version: 1.7.1
+ * Model-Version: 1.7.3
  */
 /*
  * Copyright (c) 2026, Sensirion AG
@@ -48,7 +48,7 @@ int main(void) {
     sensirion_i2c_hal_init();
     sen66_init(SEN66_I2C_ADDR_6B);
 
-    int32_t humi = 0;
+    int16_t humi = 0;
     int16_t t = 0;
 
     error = sen66_stop_measurement();
@@ -62,7 +62,6 @@ int main(void) {
         printf("%s\n", "stop measurement not successful");
     }
 
-    humi = 0;
     while (true) {
         sensirion_hal_sleep_us(50000);
         error = sen66_get_sht_heater_measurements(&humi, &t);
